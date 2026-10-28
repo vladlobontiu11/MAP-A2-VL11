@@ -3,7 +3,21 @@ package interpreter.model.value;
 import interpreter.model.type.IType;
 import interpreter.model.type.IntType;
 
-public record IntValue(int val) implements IValue {
+public final class IntValue implements IValue {
+    private final int val;
+
+    public IntValue(int val) {
+        this.val = val;
+    }
+
+    public int getVal() {
+        return val;
+    }
+
+    public int val() {
+        return val;
+    }
+
     @Override
     public IType getType() {
         return new IntType();
@@ -12,5 +26,22 @@ public record IntValue(int val) implements IValue {
     @Override
     public String toString() {
         return Integer.toString(val);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof IntValue)) {
+            return false;
+        }
+        IntValue otherValue = (IntValue) other;
+        return val == otherValue.val;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(val);
     }
 }

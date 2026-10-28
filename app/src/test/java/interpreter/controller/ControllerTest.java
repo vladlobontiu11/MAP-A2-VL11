@@ -5,6 +5,7 @@ import interpreter.model.PrgState;
 import interpreter.model.adt.MyDictionary;
 import interpreter.model.adt.MyList;
 import interpreter.model.adt.MyStack;
+import interpreter.model.stmt.IStmt;
 import interpreter.model.stmt.NopStmt;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IntValue;
@@ -17,12 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ControllerTest {
-    private static PrgState run(interpreter.model.stmt.IStmt program) throws Exception {
+    // Runs a whole program and returns its final state.
+    private static PrgState run(IStmt program) throws Exception {
         PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), program);
         new Controller(new Repository(state), false).allStep();
         return state;
     }
 
+    // Checks the final output from all three example programs.
     @Test
     void examplesProduceExpectedOutput() throws Exception {
         PrgState first = run(Examples.EX1);
@@ -40,6 +43,7 @@ class ControllerTest {
         assertTrue(third.getExeStack().isEmpty());
     }
 
+    // Checks that one step cannot run with an empty stack.
     @Test
     void oneStepRejectsAnEmptyExecutionStack() throws Exception {
         PrgState state = new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), new NopStmt());

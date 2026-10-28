@@ -4,7 +4,24 @@ import interpreter.exceptions.MyException;
 import interpreter.model.PrgState;
 import interpreter.model.exp.IExp;
 
-public record PrintStmt(IExp exp) implements IStmt {
+public final class PrintStmt implements IStmt {
+    private final IExp exp;
+
+    public PrintStmt(IExp exp) {
+        if (exp == null) {
+            throw new NullPointerException("Print expression cannot be null");
+        }
+        this.exp = exp;
+    }
+
+    public IExp getExp() {
+        return exp;
+    }
+
+    public IExp exp() {
+        return exp;
+    }
+
     @Override
     public PrgState execute(PrgState state) throws MyException {
         state.getOut().add(exp.eval(state.getSymTable()));
@@ -14,5 +31,22 @@ public record PrintStmt(IExp exp) implements IStmt {
     @Override
     public String toString() {
         return "print(" + exp + ")";
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof PrintStmt)) {
+            return false;
+        }
+        PrintStmt otherStatement = (PrintStmt) other;
+        return exp.equals(otherStatement.exp);
+    }
+
+    @Override
+    public int hashCode() {
+        return exp.hashCode();
     }
 }

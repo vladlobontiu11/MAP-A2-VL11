@@ -6,14 +6,15 @@ import interpreter.model.PrgState;
 import interpreter.model.stmt.IStmt;
 import interpreter.repository.IRepository;
 
-import java.util.Objects;
-
 public class Controller {
     private final IRepository repo;
     private final boolean display;
 
     public Controller(IRepository repo, boolean display) {
-        this.repo = Objects.requireNonNull(repo);
+        if (repo == null) {
+            throw new NullPointerException("Repository cannot be null");
+        }
+        this.repo = repo;
         this.display = display;
     }
 
@@ -28,6 +29,8 @@ public class Controller {
     public void allStep() throws MyException {
         PrgState programState = repo.getCrtPrg();
         showState(programState);
+
+        // Execute one statement at a time until there is nothing left to run.
         while (!programState.getExeStack().isEmpty()) {
             oneStep(programState);
             showState(programState);

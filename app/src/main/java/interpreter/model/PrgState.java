@@ -6,8 +6,6 @@ import interpreter.model.adt.IStack;
 import interpreter.model.stmt.IStmt;
 import interpreter.model.value.IValue;
 
-import java.util.Objects;
-
 public class PrgState {
     private final IStack<IStmt> exeStack;
     private final IDictionary<String, IValue> symTable;
@@ -16,10 +14,13 @@ public class PrgState {
 
     public PrgState(IStack<IStmt> exeStack, IDictionary<String, IValue> symTable,
                     IList<IValue> out, IStmt program) {
-        this.exeStack = Objects.requireNonNull(exeStack);
-        this.symTable = Objects.requireNonNull(symTable);
-        this.out = Objects.requireNonNull(out);
-        this.originalProgram = Objects.requireNonNull(program);
+        if (exeStack == null || symTable == null || out == null || program == null) {
+            throw new NullPointerException("Program state components cannot be null");
+        }
+        this.exeStack = exeStack;
+        this.symTable = symTable;
+        this.out = out;
+        this.originalProgram = program;
         exeStack.push(program);
     }
 

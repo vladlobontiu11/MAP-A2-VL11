@@ -5,18 +5,52 @@ import interpreter.exceptions.ExpressionException;
 import interpreter.model.adt.IDictionary;
 import interpreter.model.value.IValue;
 
-public record VarExp(String id) implements IExp {
+public final class VarExp implements IExp {
+    private final String variableName;
+
+    public VarExp(String variableName) {
+        if (variableName == null) {
+            throw new NullPointerException("Variable name cannot be null");
+        }
+        this.variableName = variableName;
+    }
+
+    public String getId() {
+        return variableName;
+    }
+
+    public String id() {
+        return variableName;
+    }
+
     @Override
     public IValue eval(IDictionary<String, IValue> symTable) throws ExpressionException {
         try {
-            return symTable.lookup(id);
+            return symTable.lookup(variableName);
         } catch (ADTException exception) {
-            throw new ExpressionException("variable " + id + " is not defined");
+            throw new ExpressionException("variable " + variableName + " is not defined");
         }
     }
 
     @Override
     public String toString() {
-        return id;
+        return variableName;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof VarExp)) {
+            return false;
+        }
+        VarExp otherExpression = (VarExp) other;
+        return variableName.equals(otherExpression.variableName);
+    }
+
+    @Override
+    public int hashCode() {
+        return variableName.hashCode();
     }
 }

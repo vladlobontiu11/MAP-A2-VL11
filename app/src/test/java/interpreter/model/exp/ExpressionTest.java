@@ -14,14 +14,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ExpressionTest {
     private final IDictionary<String, IValue> symTable = new MyDictionary<>();
 
+    // Makes an integer expression for the tests.
     private static IExp number(int value) {
         return new ValueExp(new IntValue(value));
     }
 
+    // Makes a boolean expression for the tests.
     private static IExp bool(boolean value) {
         return new ValueExp(new BoolValue(value));
     }
 
+    // Checks that all arithmetic operations give the right answer.
     @Test
     void arithmeticOperatorsEvaluateCorrectly() throws Exception {
         assertEquals(new IntValue(7), new ArithExp(ArithOp.ADD, number(3), number(4)).eval(symTable));
@@ -30,6 +33,7 @@ class ExpressionTest {
         assertEquals(new IntValue(2), new ArithExp(ArithOp.DIV, number(8), number(4)).eval(symTable));
     }
 
+    // Checks that dividing by zero gives an error.
     @Test
     void divisionByZeroThrows() {
         ExpressionException exception = assertThrows(ExpressionException.class,
@@ -37,6 +41,7 @@ class ExpressionTest {
         assertEquals("division by zero", exception.getMessage());
     }
 
+    // Checks that arithmetic rejects a boolean operand.
     @Test
     void arithmeticRejectsNonIntegerOperands() {
         ExpressionException exception = assertThrows(ExpressionException.class,
@@ -44,6 +49,7 @@ class ExpressionTest {
         assertEquals("first operand is not an integer", exception.getMessage());
     }
 
+    // Checks that AND and OR return the right boolean values.
     @Test
     void logicOperatorsEvaluateCorrectly() throws Exception {
         assertEquals(new BoolValue(false),
@@ -52,6 +58,7 @@ class ExpressionTest {
                 new LogicExp(LogicOp.OR, bool(false), bool(true)).eval(symTable));
     }
 
+    // Checks that logic rejects an integer operand.
     @Test
     void logicRejectsNonBooleanOperands() {
         ExpressionException exception = assertThrows(ExpressionException.class,
@@ -59,6 +66,7 @@ class ExpressionTest {
         assertEquals("first operand is not a boolean", exception.getMessage());
     }
 
+    // Checks that looking up an unknown variable gives an error.
     @Test
     void variableLookupRejectsUndefinedVariable() {
         ExpressionException exception = assertThrows(ExpressionException.class,

@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ADTTest {
+    // Checks that the stack is LIFO and throws when empty.
     @Test
     void stackUsesLifoOrderAndRejectsPopWhenEmpty() throws ADTException {
         IStack<Integer> stack = new MyStack<>();
@@ -21,6 +22,7 @@ class ADTTest {
         assertThrows(ADTException.class, stack::pop);
     }
 
+    // Checks adding, finding, and changing a dictionary value.
     @Test
     void dictionarySupportsPutLookupAndUpdate() throws ADTException {
         IDictionary<String, Integer> dictionary = new MyDictionary<>();
@@ -32,6 +34,7 @@ class ADTTest {
         assertEquals(2, dictionary.lookup("x"));
     }
 
+    // Checks that a missing dictionary key causes an error.
     @Test
     void dictionaryRejectsLookupAndUpdateOfMissingKeys() {
         IDictionary<String, Integer> dictionary = new MyDictionary<>();
@@ -41,6 +44,7 @@ class ADTTest {
         assertThrows(ADTException.class, () -> dictionary.update("missing", 1));
     }
 
+    // Checks adding items and reading them by index.
     @Test
     void listSupportsAddGetAndSize() throws ADTException {
         IList<String> list = new MyList<>();
@@ -52,6 +56,7 @@ class ADTTest {
         assertEquals("second", list.get(1));
     }
 
+    // Checks that an invalid list index causes an error.
     @Test
     void listRejectsAnOutOfBoundsIndex() {
         IList<String> list = new MyList<>();

@@ -5,12 +5,12 @@ import interpreter.model.PrgState;
 import interpreter.model.adt.MyDictionary;
 import interpreter.model.adt.MyList;
 import interpreter.model.adt.MyStack;
+import interpreter.model.type.BoolType;
+import interpreter.model.type.IntType;
 import interpreter.model.exp.IExp;
 import interpreter.model.exp.ValueExp;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IntValue;
-import interpreter.model.type.BoolType;
-import interpreter.model.type.IntType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,14 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StatementTest {
+    // Creates a fresh program state for a test.
     private static PrgState state(IStmt program) {
         return new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), program);
     }
 
+    // Makes an integer expression for the tests.
     private static IExp number(int value) {
         return new ValueExp(new IntValue(value));
     }
 
+    // Checks that the first statement runs before the second.
     @Test
     void compositeStatementSchedulesFirstThenSecond() throws Exception {
         IStmt first = new NopStmt();
@@ -38,6 +41,7 @@ class StatementTest {
         assertEquals(second, state.getExeStack().pop());
     }
 
+    // Checks default values and duplicate declaration errors.
     @Test
     void declarationSetsDefaultValueAndRejectsRedeclaration() throws Exception {
         PrgState state = state(new NopStmt());
@@ -52,6 +56,7 @@ class StatementTest {
         assertEquals(new BoolValue(false), state.getSymTable().lookup("flag"));
     }
 
+    // Checks assignment works and rejects invalid assignments.
     @Test
     void assignmentUpdatesDeclaredVariableAndRejectsErrors() throws Exception {
         PrgState state = state(new NopStmt());
@@ -65,6 +70,7 @@ class StatementTest {
                 () -> new AssignStmt("x", new ValueExp(new BoolValue(true))).execute(state));
     }
 
+    // Checks that print adds the evaluated value to the output.
     @Test
     void printAppendsEvaluatedValue() throws Exception {
         PrgState state = state(new NopStmt());
@@ -75,6 +81,7 @@ class StatementTest {
         assertEquals(new IntValue(9), state.getOut().get(0));
     }
 
+    // Checks that if picks the right branch and needs a boolean.
     @Test
     void ifSchedulesOnlyTheSelectedBranchAndRejectsNonBooleanCondition() throws Exception {
         PrgState state = state(new NopStmt());
@@ -90,6 +97,7 @@ class StatementTest {
                 () -> new IfStmt(number(1), thenBranch, elseBranch).execute(state));
     }
 
+    // Checks that nop leaves the state as it was.
     @Test
     void nopLeavesStateUnchanged() throws Exception {
         PrgState state = state(new NopStmt());

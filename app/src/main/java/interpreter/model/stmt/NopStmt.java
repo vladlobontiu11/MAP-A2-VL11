@@ -2,7 +2,7 @@ package interpreter.model.stmt;
 
 import interpreter.model.PrgState;
 
-public record NopStmt() implements IStmt {
+public final class NopStmt implements IStmt {
     @Override
     public PrgState execute(PrgState state) {
         return state;
@@ -11,5 +11,15 @@ public record NopStmt() implements IStmt {
     @Override
     public String toString() {
         return "nop";
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof NopStmt;
+    }
+
+    @Override
+    public int hashCode() {
+        return NopStmt.class.hashCode();
     }
 }
