@@ -4,6 +4,7 @@ import interpreter.exceptions.ADTException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Collections;
 
 public class MyDictionary<K, V> implements IDictionary<K, V> {
     private final Map<K, V> dictionary = new LinkedHashMap<>();
@@ -33,6 +34,13 @@ public class MyDictionary<K, V> implements IDictionary<K, V> {
         }
         dictionary.put(key, value);
     }
+
+    @Override public void remove(K key) throws ADTException {
+        if (!dictionary.containsKey(key)) throw new ADTException("key " + key + " is not defined");
+        dictionary.remove(key);
+    }
+
+    @Override public Map<K, V> toMap() { return Collections.unmodifiableMap(new LinkedHashMap<>(dictionary)); }
 
     @Override
     public String toString() {
