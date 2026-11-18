@@ -23,6 +23,7 @@ public final class VarExp implements IExp {
         return variableName;
     }
 
+    // Looks up the variable's current value in the symbol table.
     @Override
     public IValue eval(IDictionary<String, IValue> symTable) throws ExpressionException {
         try {

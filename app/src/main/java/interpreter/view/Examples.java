@@ -59,6 +59,7 @@ public final class Examples {
     private Examples() {
     }
 
+    // Builds a program that assigns and prints the number 2.
     private static IStmt createExample1() {
         IStmt declareVariable = new VarDeclStmt("v", new IntType());
         IStmt assignValue = new AssignStmt("v", number(2));
@@ -68,6 +69,7 @@ public final class Examples {
                 new CompStmt(assignValue, printValue));
     }
 
+    // Builds a program that evaluates an arithmetic expression.
     private static IStmt createExample2() {
         IExp multiplication = new ArithExp(ArithOp.MUL, number(3), number(5));
         IExp addition = new ArithExp(ArithOp.ADD, number(2), multiplication);
@@ -85,6 +87,7 @@ public final class Examples {
                                 new CompStmt(assignB, printB))));
     }
 
+    // Builds a program that uses a boolean condition to choose a value.
     private static IStmt createExample3() {
         IStmt declareA = new VarDeclStmt("a", new BoolType());
         IStmt declareV = new VarDeclStmt("v", new IntType());
@@ -124,6 +127,7 @@ public final class Examples {
                                                                         closeFile))))))));
     }
 
+    // Builds a program that compares two integers and prints the smaller one.
     private static IStmt createExample5() {
         IStmt declareA = new VarDeclStmt("a", new IntType());
         IStmt declareB = new VarDeclStmt("b", new IntType());
@@ -141,6 +145,7 @@ public final class Examples {
                                 new CompStmt(setB, chooseNumberToPrint))));
     }
 
+    // Creates the ordered list of examples and their menu descriptions.
     private static List<Example> createExamples() {
         List<Example> examples = new ArrayList<>();
         examples.add(new Example("Ex1: print v after assigning 2 (result: 2)", EX1));
@@ -152,6 +157,7 @@ public final class Examples {
         return Collections.unmodifiableList(examples);
     }
 
+    // Makes a constant integer expression for the example programs.
     private static IExp number(int value) {
         return new ValueExp(new IntValue(value));
     }

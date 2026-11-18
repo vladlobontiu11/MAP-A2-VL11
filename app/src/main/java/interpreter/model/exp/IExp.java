@@ -5,5 +5,6 @@ import interpreter.model.adt.IDictionary;
 import interpreter.model.value.IValue;
 
 public interface IExp {
+    // Evaluates the expression using the current variable values.
     IValue eval(IDictionary<String, IValue> symTable) throws MyException;
 }

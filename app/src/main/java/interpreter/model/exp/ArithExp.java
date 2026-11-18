@@ -44,6 +44,7 @@ public final class ArithExp implements IExp {
         return right;
     }
 
+    // Evaluates two integer expressions and applies the selected operation.
     @Override
     public IValue eval(IDictionary<String, IValue> symTable) throws MyException {
         IValue leftValue = left.eval(symTable);

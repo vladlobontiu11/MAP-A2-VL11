@@ -18,6 +18,7 @@ public final class IntValue implements IValue {
         return val;
     }
 
+    // Returns the language type of this value.
     @Override
     public IType getType() {
         return new IntType();
@@ -28,6 +29,7 @@ public final class IntValue implements IValue {
         return Integer.toString(val);
     }
 
+    // Compares integer values by their stored number.
     @Override
     public boolean equals(Object other) {
         if (this == other) {
@@ -40,6 +42,7 @@ public final class IntValue implements IValue {
         return val == otherValue.val;
     }
 
+    // Gives equal integer values the same hash code.
     @Override
     public int hashCode() {
         return Integer.hashCode(val);

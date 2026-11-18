@@ -3,6 +3,7 @@ package interpreter.model.stmt;
 import interpreter.model.PrgState;
 
 public final class NopStmt implements IStmt {
+    // Does nothing and leaves the program state unchanged.
     @Override
     public PrgState execute(PrgState state) {
         return state;

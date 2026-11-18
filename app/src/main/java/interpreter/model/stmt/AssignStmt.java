@@ -36,6 +36,7 @@ public final class AssignStmt implements IStmt {
         return expression;
     }
 
+    // Evaluates the expression and stores it in a declared variable.
     @Override
     public PrgState execute(PrgState state) throws MyException {
         IDictionary<String, IValue> symbolTable = state.getSymTable();

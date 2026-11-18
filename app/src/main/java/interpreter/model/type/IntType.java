@@ -4,6 +4,7 @@ import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
 
 public final class IntType implements IType {
+    // Integer variables start with zero.
     @Override
     public IValue defaultValue() {
         return new IntValue(0);

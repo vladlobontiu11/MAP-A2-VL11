@@ -32,6 +32,7 @@ public final class VarDeclStmt implements IStmt {
         return type;
     }
 
+    // Adds the variable with the default value for its type.
     @Override
     public PrgState execute(PrgState state) throws StatementException {
         if (state.getSymTable().isDefined(name)) {

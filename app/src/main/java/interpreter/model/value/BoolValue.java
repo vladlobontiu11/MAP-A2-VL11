@@ -18,6 +18,7 @@ public final class BoolValue implements IValue {
         return val;
     }
 
+    // Returns the language type of this value.
     @Override
     public IType getType() {
         return new BoolType();
@@ -28,6 +29,7 @@ public final class BoolValue implements IValue {
         return Boolean.toString(val);
     }
 
+    // Compares boolean values by their stored result.
     @Override
     public boolean equals(Object other) {
         if (this == other) {
@@ -40,6 +42,7 @@ public final class BoolValue implements IValue {
         return val == otherValue.val;
     }
 
+    // Gives equal boolean values the same hash code.
     @Override
     public int hashCode() {
         return Boolean.hashCode(val);

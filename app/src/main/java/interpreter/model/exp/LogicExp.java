@@ -44,6 +44,7 @@ public final class LogicExp implements IExp {
         return right;
     }
 
+    // Evaluates two boolean expressions and applies AND or OR.
     @Override
     public IValue eval(IDictionary<String, IValue> symTable) throws MyException {
         IValue leftValue = left.eval(symTable);

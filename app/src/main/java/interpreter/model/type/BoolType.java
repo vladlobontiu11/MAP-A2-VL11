@@ -4,6 +4,7 @@ import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
 
 public final class BoolType implements IType {
+    // Boolean variables start as false.
     @Override
     public IValue defaultValue() {
         return new BoolValue(false);

@@ -30,6 +30,7 @@ public final class CompStmt implements IStmt {
         return second;
     }
 
+    // Pushes both statements so the first one runs before the second.
     @Override
     public PrgState execute(PrgState state) {
         // The stack runs its top first, so push the second statement first.

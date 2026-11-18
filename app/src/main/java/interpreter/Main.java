@@ -10,6 +10,7 @@ import interpreter.view.RunExampleCommand;
 import interpreter.view.TextMenu;
 
 public class Main {
+    // Creates the command menu and connects every example to its controller.
     public static void main(String[] args) {
         TextMenu menu = new TextMenu();
         menu.addCommand(new ExitCommand("0", "exit"));

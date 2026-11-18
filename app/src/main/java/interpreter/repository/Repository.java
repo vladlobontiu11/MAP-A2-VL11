@@ -30,6 +30,7 @@ public class Repository implements IRepository {
         return programStates.get(0);
     }
 
+    // Appends a snapshot of the current state to the log file.
     @Override
     public void logPrgStateExec() throws MyException {
         // Append each state so running another step does not erase earlier states.

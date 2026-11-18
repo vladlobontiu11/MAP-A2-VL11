@@ -22,6 +22,7 @@ public final class PrintStmt implements IStmt {
         return exp;
     }
 
+    // Evaluates the expression and adds its value to the output list.
     @Override
     public PrgState execute(PrgState state) throws MyException {
         state.getOut().add(exp.eval(state.getSymTable()));

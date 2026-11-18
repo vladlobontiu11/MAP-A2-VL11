@@ -18,6 +18,8 @@ public class Controller {
         this.display = display;
     }
 
+    // Pops and executes one statement from the program stack.
+    // Pops and executes one statement from the program stack.
     public PrgState oneStep(PrgState state) throws MyException {
         if (state.getExeStack().isEmpty()) {
             throw new StatementException("program state stack is empty");
@@ -26,6 +28,8 @@ public class Controller {
         return currentStatement.execute(state);
     }
 
+    // Logs and optionally displays the program before and after each step.
+    // Logs and optionally displays the program before and after each step.
     public void allStep() throws MyException {
         // Save the initial state and every state produced by a statement.
         PrgState programState = repo.getCrtPrg();
@@ -40,6 +44,8 @@ public class Controller {
         }
     }
 
+    // Prints the current state when display mode is turned on.
+    // Prints the current state when display mode is turned on.
     private void showState(PrgState state) {
         if (display) {
             System.out.println(state);

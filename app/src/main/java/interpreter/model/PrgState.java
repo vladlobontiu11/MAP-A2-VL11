@@ -39,6 +39,7 @@ public class PrgState {
     }
 
     // Creates a state with empty stacks, tables, and output for a program.
+    // Creates a state with empty stacks, tables, and output for a program.
     public static PrgState of(IStmt program) {
         return new PrgState(new MyStack<IStmt>(),
                 new MyDictionary<String, IValue>(),

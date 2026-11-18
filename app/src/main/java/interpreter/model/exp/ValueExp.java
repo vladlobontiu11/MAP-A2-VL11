@@ -21,6 +21,7 @@ public final class ValueExp implements IExp {
         return value;
     }
 
+    // Returns the value stored in this expression.
     @Override
     public IValue eval(IDictionary<String, IValue> symTable) {
         return value;

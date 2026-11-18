@@ -7,10 +7,12 @@ import java.util.Scanner;
 public class TextMenu {
     private final Map<String, Command> commands = new LinkedHashMap<>();
 
+    // Adds a command while keeping the menu in insertion order.
     public void addCommand(Command command) {
         commands.put(command.getKey(), command);
     }
 
+    // Displays the available commands.
     private void printMenu() {
         for (Command command : commands.values()) {
             System.out.printf("%4s : %s%n",
@@ -18,6 +20,7 @@ public class TextMenu {
         }
     }
 
+    // Reads menu choices and runs the matching command.
     public void show() {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
@@ -34,6 +37,7 @@ public class TextMenu {
         }
     }
 
+    // Starts the menu loop.
     public void run() {
         show();
     }
