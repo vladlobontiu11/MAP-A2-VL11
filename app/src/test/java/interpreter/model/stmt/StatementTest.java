@@ -2,9 +2,6 @@ package interpreter.model.stmt;
 
 import interpreter.exceptions.StatementException;
 import interpreter.model.PrgState;
-import interpreter.model.adt.MyDictionary;
-import interpreter.model.adt.MyList;
-import interpreter.model.adt.MyStack;
 import interpreter.model.type.BoolType;
 import interpreter.model.type.IntType;
 import interpreter.model.exp.IExp;
@@ -20,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class StatementTest {
     // Creates a fresh program state for a test.
     private static PrgState state(IStmt program) {
-        return new PrgState(new MyStack<>(), new MyDictionary<>(), new MyList<>(), program);
+        return PrgState.of(program);
     }
 
     // Makes an integer expression for the tests.

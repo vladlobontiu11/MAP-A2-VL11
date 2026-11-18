@@ -63,4 +63,37 @@ class ADTTest {
 
         assertThrows(ADTException.class, () -> list.get(0));
     }
+
+    // Checks that removing a dictionary key works and missing keys fail.
+    @Test
+    void dictionaryRemovesKeysAndReturnsASnapshot() throws ADTException {
+        IDictionary<String, Integer> dictionary = new MyDictionary<>();
+        dictionary.put("x", 1);
+
+        java.util.Map<String, Integer> copy = dictionary.toMap();
+        dictionary.update("x", 2);
+
+        assertEquals(1, copy.get("x"));
+        assertEquals(2, dictionary.lookup("x"));
+        assertThrows(UnsupportedOperationException.class, () -> copy.put("y", 3));
+
+        dictionary.remove("x");
+        assertFalse(dictionary.isDefined("x"));
+        assertThrows(ADTException.class, () -> dictionary.remove("x"));
+    }
+
+    // Checks that stack and list copies have the expected order.
+    @Test
+    void stackAndListReturnCopiesInTheirExpectedOrder() throws ADTException {
+        IStack<Integer> stack = new MyStack<>();
+        stack.push(1);
+        stack.push(2);
+
+        IList<Integer> list = new MyList<>();
+        list.add(1);
+        list.add(2);
+
+        assertEquals(java.util.List.of(2, 1), stack.toList());
+        assertEquals(java.util.List.of(1, 2), list.toList());
+    }
 }

@@ -27,6 +27,7 @@ public class Controller {
     }
 
     public void allStep() throws MyException {
+        // Save the initial state and every state produced by a statement.
         PrgState programState = repo.getCrtPrg();
         repo.logPrgStateExec();
         showState(programState);

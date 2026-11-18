@@ -3,9 +3,9 @@ package interpreter.model.adt;
 import interpreter.exceptions.ADTException;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.ArrayList;
 
 public class MyStack<T> implements IStack<T> {
     private final Deque<T> stack = new ArrayDeque<>();
@@ -28,7 +28,10 @@ public class MyStack<T> implements IStack<T> {
         return stack.isEmpty();
     }
 
-    @Override public List<T> toList() { return List.copyOf(stack); }
+    @Override
+    public List<T> toList() {
+        return new ArrayList<>(stack);
+    }
 
     @Override
     public String toString() {

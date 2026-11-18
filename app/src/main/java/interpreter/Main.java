@@ -1,15 +1,34 @@
 package interpreter;
+
 import interpreter.controller.Controller;
 import interpreter.model.PrgState;
-import interpreter.model.stmt.IStmt;
 import interpreter.repository.Repository;
-import interpreter.view.*;
-import java.util.List;
+import interpreter.view.Command;
+import interpreter.view.Examples;
+import interpreter.view.ExitCommand;
+import interpreter.view.RunExampleCommand;
+import interpreter.view.TextMenu;
+
 public class Main {
-    public static void main(String[] args){
-        List<IStmt> programs=List.of(Examples.EX1,Examples.EX2,Examples.EX3,Examples.EX4,Examples.EX5);
-        TextMenu menu=new TextMenu(); menu.addCommand(new ExitCommand("0","exit"));
-        for(int i=0;i<programs.size();i++){IStmt p=programs.get(i);menu.addCommand(new RunExampleCommand(String.valueOf(i+1),p.toString(),new Controller(new Repository(PrgState.of(p),"log"+(i+1)+".txt"),true)));}
+    public static void main(String[] args) {
+        TextMenu menu = new TextMenu();
+        menu.addCommand(new ExitCommand("0", "exit"));
+
+        for (int i = 0; i < Examples.ALL.size(); i++) {
+            Examples.Example example = Examples.ALL.get(i);
+            String logFileName = "log" + (i + 1) + ".txt";
+
+            PrgState state = PrgState.of(example.getProgram());
+            Repository repository = new Repository(state, logFileName);
+            Controller controller = new Controller(repository, true);
+
+            Command command = new RunExampleCommand(
+                    Integer.toString(i + 1),
+                    example.getName(),
+                    controller);
+            menu.addCommand(command);
+        }
+
         menu.show();
     }
 }
