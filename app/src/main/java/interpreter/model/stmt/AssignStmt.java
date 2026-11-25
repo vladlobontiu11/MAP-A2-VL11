@@ -44,7 +44,7 @@ public final class AssignStmt implements IStmt {
             throw new StatementException("variable " + variableName + " was not declared");
         }
 
-        IValue value = expression.eval(symbolTable);
+        IValue value = expression.eval(symbolTable, state.getHeap());
         IValue currentValue = symbolTable.lookup(variableName);
         if (!value.getType().equals(currentValue.getType())) {
             throw new StatementException("declared type of variable " + variableName

@@ -3,6 +3,7 @@ package interpreter.model.exp;
 import interpreter.exceptions.ExpressionException;
 import interpreter.exceptions.MyException;
 import interpreter.model.adt.IDictionary;
+import interpreter.model.adt.IHeap;
 import interpreter.model.value.IValue;
 import interpreter.model.value.IntValue;
 
@@ -46,14 +47,14 @@ public final class ArithExp implements IExp {
 
     // Evaluates two integer expressions and applies the selected operation.
     @Override
-    public IValue eval(IDictionary<String, IValue> symTable) throws MyException {
-        IValue leftValue = left.eval(symTable);
+    public IValue eval(IDictionary<String, IValue> symTable, IHeap heap) throws MyException {
+        IValue leftValue = left.eval(symTable, heap);
         if (!(leftValue instanceof IntValue)) {
             throw new ExpressionException("first operand is not an integer");
         }
         IntValue leftNumber = (IntValue) leftValue;
 
-        IValue rightValue = right.eval(symTable);
+        IValue rightValue = right.eval(symTable, heap);
         if (!(rightValue instanceof IntValue)) {
             throw new ExpressionException("second operand is not an integer");
         }

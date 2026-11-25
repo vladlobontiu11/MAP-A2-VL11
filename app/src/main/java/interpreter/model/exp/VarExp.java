@@ -3,6 +3,7 @@ package interpreter.model.exp;
 import interpreter.exceptions.ADTException;
 import interpreter.exceptions.ExpressionException;
 import interpreter.model.adt.IDictionary;
+import interpreter.model.adt.IHeap;
 import interpreter.model.value.IValue;
 
 public final class VarExp implements IExp {
@@ -25,7 +26,8 @@ public final class VarExp implements IExp {
 
     // Looks up the variable's current value in the symbol table.
     @Override
-    public IValue eval(IDictionary<String, IValue> symTable) throws ExpressionException {
+    public IValue eval(IDictionary<String, IValue> symTable, IHeap heap)
+            throws ExpressionException {
         try {
             return symTable.lookup(variableName);
         } catch (ADTException exception) {

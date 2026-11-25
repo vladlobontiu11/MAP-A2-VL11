@@ -48,7 +48,7 @@ public final class IfStmt implements IStmt {
     // Checks the boolean condition and schedules only its matching branch.
     @Override
     public PrgState execute(PrgState state) throws MyException {
-        IValue conditionValue = conditionExpression.eval(state.getSymTable());
+        IValue conditionValue = conditionExpression.eval(state.getSymTable(), state.getHeap());
         if (!(conditionValue instanceof BoolValue)) {
             throw new StatementException("if condition is not a boolean");
         }

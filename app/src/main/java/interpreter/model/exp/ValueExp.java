@@ -1,6 +1,7 @@
 package interpreter.model.exp;
 
 import interpreter.model.adt.IDictionary;
+import interpreter.model.adt.IHeap;
 import interpreter.model.value.IValue;
 
 public final class ValueExp implements IExp {
@@ -23,7 +24,7 @@ public final class ValueExp implements IExp {
 
     // Returns the value stored in this expression.
     @Override
-    public IValue eval(IDictionary<String, IValue> symTable) {
+    public IValue eval(IDictionary<String, IValue> symTable, IHeap heap) {
         return value;
     }
 

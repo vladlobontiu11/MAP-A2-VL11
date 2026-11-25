@@ -5,6 +5,7 @@ import interpreter.model.exp.ArithOp;
 import interpreter.model.exp.IExp;
 import interpreter.model.exp.RelOp;
 import interpreter.model.exp.RelationalExp;
+import interpreter.model.exp.ReadHeapExp;
 import interpreter.model.exp.ValueExp;
 import interpreter.model.exp.VarExp;
 import interpreter.model.stmt.AssignStmt;
@@ -12,12 +13,16 @@ import interpreter.model.stmt.CloseRFileStmt;
 import interpreter.model.stmt.CompStmt;
 import interpreter.model.stmt.IStmt;
 import interpreter.model.stmt.IfStmt;
+import interpreter.model.stmt.NewStmt;
 import interpreter.model.stmt.OpenRFileStmt;
 import interpreter.model.stmt.PrintStmt;
 import interpreter.model.stmt.ReadFileStmt;
 import interpreter.model.stmt.VarDeclStmt;
+import interpreter.model.stmt.WhileStmt;
+import interpreter.model.stmt.WriteHeapStmt;
 import interpreter.model.type.BoolType;
 import interpreter.model.type.IntType;
+import interpreter.model.type.RefType;
 import interpreter.model.type.StringType;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IntValue;
@@ -54,6 +59,11 @@ public final class Examples {
     public static final IStmt EX3 = createExample3();
     public static final IStmt EX4 = fileExample("test.in");
     public static final IStmt EX5 = createExample5();
+    public static final IStmt EX6 = createExample6();
+    public static final IStmt EX7 = createExample7();
+    public static final IStmt EX8 = createExample8();
+    public static final IStmt EX9 = createExample9();
+    public static final IStmt EX10 = createExample10();
     public static final List<Example> ALL = createExamples();
 
     private Examples() {
@@ -145,6 +155,92 @@ public final class Examples {
                                 new CompStmt(setB, chooseNumberToPrint))));
     }
 
+    // Builds a program that allocates and prints two reference values.
+    private static IStmt createExample6() {
+        IStmt declareV = new VarDeclStmt("v", new RefType(new IntType()));
+        IStmt allocateV = new NewStmt("v", number(20));
+        IStmt declareA = new VarDeclStmt("a",
+                                new RefType(new RefType(new IntType())));
+        IStmt allocateA = new NewStmt("a", new VarExp("v"));
+        IStmt printV = new PrintStmt(new VarExp("v"));
+        IStmt printA = new PrintStmt(new VarExp("a"));
+
+        return new CompStmt(declareV,
+                                new CompStmt(allocateV,
+                                        new CompStmt(declareA,
+                                                new CompStmt(allocateA, new CompStmt(printV, printA)))));
+    }
+
+    // Builds a program that reads through nested references in the heap.
+    private static IStmt createExample7() {
+        IStmt declareV = new VarDeclStmt("v", new RefType(new IntType()));
+        IStmt allocateV = new NewStmt("v", number(20));
+        IStmt declareA = new VarDeclStmt("a",
+                                new RefType(new RefType(new IntType())));
+        IStmt allocateA = new NewStmt("a", new VarExp("v"));
+        IStmt printValue = new PrintStmt(new ReadHeapExp(new VarExp("v")));
+        IExp nestedValue = new ReadHeapExp(new ReadHeapExp(new VarExp("a")));
+        IExp addFive = new ArithExp(ArithOp.ADD, nestedValue, number(5));
+        IStmt printNestedValue = new PrintStmt(addFive);
+
+        return new CompStmt(declareV,
+                                new CompStmt(allocateV,
+                                        new CompStmt(declareA,
+                                                new CompStmt(allocateA,
+                                                        new CompStmt(printValue, printNestedValue)))));
+    }
+
+    // Builds a program that changes a heap value and reads the new value.
+    private static IStmt createExample8() {
+        IStmt declareV = new VarDeclStmt("v", new RefType(new IntType()));
+        IStmt allocateV = new NewStmt("v", number(20));
+        IStmt printOriginal = new PrintStmt(new ReadHeapExp(new VarExp("v")));
+        IStmt writeNewValue = new WriteHeapStmt("v", number(30));
+        IExp addFive = new ArithExp(ArithOp.ADD,
+                                new ReadHeapExp(new VarExp("v")), number(5));
+        IStmt printUpdatedValue = new PrintStmt(addFive);
+
+        return new CompStmt(declareV,
+                                new CompStmt(allocateV,
+                                        new CompStmt(printOriginal,
+                                                new CompStmt(writeNewValue, printUpdatedValue))));
+    }
+
+    // Builds a program that tests whether garbage collection keeps nested references.
+    private static IStmt createExample9() {
+        IStmt declareV = new VarDeclStmt("v", new RefType(new IntType()));
+        IStmt allocateV = new NewStmt("v", number(20));
+        IStmt declareA = new VarDeclStmt("a",
+                                new RefType(new RefType(new IntType())));
+        IStmt allocateA = new NewStmt("a", new VarExp("v"));
+        IStmt allocateNewV = new NewStmt("v", number(30));
+        IStmt printOriginalValue = new PrintStmt(
+                                new ReadHeapExp(new ReadHeapExp(new VarExp("a"))));
+
+        return new CompStmt(declareV,
+                                new CompStmt(allocateV,
+                                        new CompStmt(declareA,
+                                                new CompStmt(allocateA,
+                                                        new CompStmt(allocateNewV, printOriginalValue)))));
+    }
+
+    // Builds a loop that prints 4 down to 1, then prints zero.
+    private static IStmt createExample10() {
+        IStmt declareV = new VarDeclStmt("v", new IntType());
+        IStmt setV = new AssignStmt("v", number(4));
+        IExp condition = new RelationalExp(
+                                RelOp.GT, new VarExp("v"), number(0));
+        IStmt decreaseAndPrint = new CompStmt(
+                                new PrintStmt(new VarExp("v")),
+                                new AssignStmt("v",
+                                        new ArithExp(ArithOp.SUB, new VarExp("v"), number(1))));
+        IStmt loop = new WhileStmt(condition, decreaseAndPrint);
+
+        return new CompStmt(declareV,
+                                new CompStmt(setV,
+                                        new CompStmt(loop, new PrintStmt(new VarExp("v")))));
+    }
+
     // Creates the ordered list of examples and their menu descriptions.
     private static List<Example> createExamples() {
         List<Example> examples = new ArrayList<>();
@@ -154,6 +250,12 @@ public final class Examples {
         examples.add(new Example(
                 "Ex4: read test.in (result: 15, 50; empty file: 0, 0)", EX4));
         examples.add(new Example("Ex5: relational expression (result: 5)", EX5));
+        examples.add(new Example(
+                "Ex6: allocate references (result: (1, int), (2, Ref(int)))", EX6));
+        examples.add(new Example("Ex7: read nested references (result: 20, 25)", EX7));
+        examples.add(new Example("Ex8: write to the heap (result: 20, 35)", EX8));
+        examples.add(new Example("Ex9: safe garbage collection (result: 20)", EX9));
+        examples.add(new Example("Ex10: while loop (result: 4, 3, 2, 1, 0)", EX10));
         return Collections.unmodifiableList(examples);
     }
 

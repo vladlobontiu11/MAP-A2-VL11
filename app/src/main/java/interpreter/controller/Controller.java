@@ -19,7 +19,6 @@ public class Controller {
     }
 
     // Pops and executes one statement from the program stack.
-    // Pops and executes one statement from the program stack.
     public PrgState oneStep(PrgState state) throws MyException {
         if (state.getExeStack().isEmpty()) {
             throw new StatementException("program state stack is empty");
@@ -28,23 +27,27 @@ public class Controller {
         return currentStatement.execute(state);
     }
 
-    // Logs and optionally displays the program before and after each step.
-    // Logs and optionally displays the program before and after each step.
+    // Runs statements, collects unreachable heap values, and logs each state.
     public void allStep() throws MyException {
-        // Save the initial state and every state produced by a statement.
         PrgState programState = repo.getCrtPrg();
+        // Save and display the initial program state.
         repo.logPrgStateExec();
         showState(programState);
 
-        // Execute one statement at a time until there is nothing left to run.
         while (!programState.getExeStack().isEmpty()) {
             oneStep(programState);
+            // Save the state before collection so the log shows what was removed.
+            repo.logPrgStateExec();
+            programState.getHeap().setContent(GarbageCollector.safeGarbageCollector(
+                    GarbageCollector.getAddrFromSymTable(
+                            programState.getSymTable().toMap().values()),
+                    programState.getHeap().getContent()));
+            // Save the state again with only reachable heap values.
             repo.logPrgStateExec();
             showState(programState);
         }
     }
 
-    // Prints the current state when display mode is turned on.
     // Prints the current state when display mode is turned on.
     private void showState(PrgState state) {
         if (display) {

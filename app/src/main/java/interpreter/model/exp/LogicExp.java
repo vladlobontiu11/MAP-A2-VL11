@@ -3,6 +3,7 @@ package interpreter.model.exp;
 import interpreter.exceptions.ExpressionException;
 import interpreter.exceptions.MyException;
 import interpreter.model.adt.IDictionary;
+import interpreter.model.adt.IHeap;
 import interpreter.model.value.BoolValue;
 import interpreter.model.value.IValue;
 
@@ -46,14 +47,14 @@ public final class LogicExp implements IExp {
 
     // Evaluates two boolean expressions and applies AND or OR.
     @Override
-    public IValue eval(IDictionary<String, IValue> symTable) throws MyException {
-        IValue leftValue = left.eval(symTable);
+    public IValue eval(IDictionary<String, IValue> symTable, IHeap heap) throws MyException {
+        IValue leftValue = left.eval(symTable, heap);
         if (!(leftValue instanceof BoolValue)) {
             throw new ExpressionException("first operand is not a boolean");
         }
         BoolValue leftBoolean = (BoolValue) leftValue;
 
-        IValue rightValue = right.eval(symTable);
+        IValue rightValue = right.eval(symTable, heap);
         if (!(rightValue instanceof BoolValue)) {
             throw new ExpressionException("second operand is not a boolean");
         }
